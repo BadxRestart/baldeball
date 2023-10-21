@@ -1,0 +1,36 @@
+check = false
+game.UserInputService.InputBegan:Connect(function(key, chat)
+    if (key.KeyCode == Enum.KeyCode.X) and (not chat) then
+        if (not check) then
+            check = true
+            Loop1 = game.RunService.Heartbeat:Connect(function()
+                arg4 = {}
+                arg4[1] = game.Players.LocalPlayer:GetMouse().X
+                arg4[2] = game.Players.LocalPlayer:GetMouse().Y
+                arg3 = {}
+                for index, player in pairs(game.Players:GetPlayers()) do
+                    arg3[tostring(player.UserId)] = workspace.CurrentCamera:WorldToScreenPoint(player.Character.HumanoidRootPart.Position)
+                end
+                game.ReplicatedStorage.Remotes.ParryAttempt:FireServer(0.5, workspace.CurrentCamera.CFrame, arg3, arg4)
+                game.ReplicatedStorage.Remotes.ParryButtonPress:Fire()
+                mouse1click()
+            end)
+            Loop2 = game.RunService.RenderStepped:Connect(function()
+                arg4 = {}
+                arg4[1] = game.Players.LocalPlayer:GetMouse().X
+                arg4[2] = game.Players.LocalPlayer:GetMouse().Y
+                arg3 = {}
+                for index, player in pairs(game.Players:GetPlayers()) do
+                    arg3[tostring(player.UserId)] = workspace.CurrentCamera:WorldToScreenPoint(player.Character.HumanoidRootPart.Position)
+                end
+                game.ReplicatedStorage.Remotes.ParryAttempt:FireServer(0.5, workspace.CurrentCamera.CFrame, arg3, arg4)
+                game.ReplicatedStorage.Remotes.ParryButtonPress:Fire()
+                mouse1click()
+            end)
+        else
+            check = false
+            Loop1:Disconnect()
+            Loop2:Disconnect()
+        end
+    end
+end
